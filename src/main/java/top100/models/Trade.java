@@ -34,6 +34,18 @@ public class Trade {
     @JoinColumn(name = "transactionId")
     Transaction transaction;
 
+    @Column(name = "status")
+    String status;
+
+    @Column(name = "type")
+    String type;
+
+    @Column(name = "sharePrice")
+    double sharePrice;
+
+    @Column(name = "amount")
+    double amount;
+
 }
 
 

@@ -33,35 +33,54 @@ public class TradeHandler implements TradeInterface {
         this.transactionRepository = transactionRepository;
     }
 
-    public void createSellingTrade() {
-        User user = userRepository.findByUsername("player");
-        Transaction transaction = transactionRepository.findAll().get(0);
+    public void createSellingTrade(int transactionId, int sharesToSell, int sharePrice) {
+        Transaction transaction = transactionRepository.findById(transactionId);
         Trade trade = new Trade();
-        trade.setSellingPlayer(user);
+        trade.setSellingPlayer(transaction.getUser());
+        trade.setType("Sell");
+        trade.setStatus("Pending");
         // No buyer at this time
-        trade.setBuyingPlayer(user);
         trade.setTransaction(transaction);
         tradeRepository.saveAndFlush(trade);
     }
 
-    public void createBuyingTrade() {
-        User user = userRepository.findByUsername("player");
-        Transaction transaction = transactionRepository.findAll().get(0);
+    public void createBuyingTrade(String buyer, int transactionId, int sharesToBuy, int sharePrice) {
+        User buyingPlayer = userRepository.findByUsername(buyer);
+        Transaction transaction = transactionRepository.findById(transactionId);
         Trade trade = new Trade();
-        trade.setBuyingPlayer(user);
-        // No seller at this time
-        trade.setSellingPlayer(user);
+        trade.setBuyingPlayer(buyingPlayer);
+        trade.setType("Buy");
+        trade.setStatus("Pending");
         trade.setTransaction(transaction);
         tradeRepository.saveAndFlush(trade);
     }
 
-    public void completeBuyingTrade() {
-
-
+    public void createCounterOffer(int tradeId, int sharesToBuy, int sharePrice) {
+        Trade trade = tradeRepository.findById(tradeId);
+        trade.setStatus("Countered");
+        trade.setAmount(sharesToBuy);
+        trade.setSharePrice(sharePrice);
+        tradeRepository.saveAndFlush(trade);
     }
 
-    public void completeSellingTrade() {
+    // Once someone has posted a buy trade, inform those who owns shares that someone is looking to sell
+    // Now a seller can view the trade and either accept/decline/counter
 
+    public void completeTrade(int id) {
+        Trade trade = tradeRepository.findById(id);
+        Transaction transaction = trade.getTransaction();
+        // Change the owner of that transaction to the buyer - they now own it
+        transaction.setUser(trade.getBuyingPlayer());
+        // Update bank accounts for seller and buyer
+        User buyer = trade.getBuyingPlayer();
+        User seller = trade.getSellingPlayer();
+        double tradeTotalAmount = trade.getAmount()*trade.getSharePrice();
+        buyer.setBank(buyer.getBank() - tradeTotalAmount);
+        seller.setBank(seller.getBank() + tradeTotalAmount);
+        // Update status
+        trade.setStatus("Complete");
+        userRepository.saveAndFlush(buyer);
+        userRepository.saveAndFlush(seller);
     }
 
     public List<Trade> getMarketOfTrades() {
@@ -69,7 +88,7 @@ public class TradeHandler implements TradeInterface {
     }
 
 
-    public void removeTrade() {
+    public void removeTrade(int id) {
 
     }
 

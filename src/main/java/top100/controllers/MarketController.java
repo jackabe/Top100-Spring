@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top100.models.Company;
 import top100.models.Trade;
-import top100.repository.UserRepository;
 import top100.service.MarketInterface;
 import top100.service.TradeInterface;
 
@@ -15,15 +14,13 @@ import java.util.List;
 @RestController
 public class MarketController {
 
-    private UserRepository userRepository;
     private TradeInterface tradeInterface;
     private MarketInterface marketInterface;
 
     private String userLoggedIn = "player";
 
     @Autowired
-    public MarketController(UserRepository userRepository, TradeInterface tradeInterface, MarketInterface marketInterface) {
-        this.userRepository = userRepository;
+    public MarketController(TradeInterface tradeInterface, MarketInterface marketInterface) {
         this.tradeInterface = tradeInterface;
         this.marketInterface = marketInterface;
     }
@@ -35,7 +32,7 @@ public class MarketController {
     // Market will initially sell the shares at the initial price (RRP)
     // When all are sold out, you then need to buy from other players for whatever price you are willing to pay // they are willing to sell
     // When the end of trading window celebration happens, perform caluclations on all stocks, then update the actual worth of stocks
-    // The actual worth will be based on the permutations (unless a special even massively changes it).
+    // The actual worth will be based on the calculation (unless a special event massively changes it).
     // The person who made the most PROFIT, will win the prize.
 
     @RequestMapping("/market/all")
@@ -55,11 +52,11 @@ public class MarketController {
 
     @RequestMapping("/market/trades/purchase/new")
     public void createPurchaseTrade() {
-        this.tradeInterface.createBuyingTrade();
+        this.tradeInterface.createBuyingTrade("player", 1 ,1, 1);
     }
 
     @RequestMapping("/market/trades/sell/new")
     public void createSellingTrade() {
-        this.tradeInterface.createSellingTrade();
+        this.tradeInterface.createSellingTrade(1,1,1);
     }
 }

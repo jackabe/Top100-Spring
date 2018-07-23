@@ -15,17 +15,17 @@ public interface TradeInterface {
     // Completing a trade will change the ownership, change balances etc
 
     // Needs to have buying player ID and transaction ID
-    void createSellingTrade();
+    void createSellingTrade(int transactionId, int sharesToSell, int sharePrice);
 
-    void createBuyingTrade();
+    void createBuyingTrade(String buyer, int transactionId, int sharesToSell, int sharePrice);
 
-    void completeSellingTrade();
+    void completeTrade(int id);
 
-    void completeBuyingTrade();
+    void createCounterOffer(int tradeId, int sharesToBuy, int sharePrice);
 
     List<Trade> getMarketOfTrades();
 
-    void removeTrade();
+    void removeTrade(int id);
 
 
 }
