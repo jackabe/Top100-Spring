@@ -31,7 +31,7 @@ public class Trade {
     User sellingPlayer;
 
     @ManyToOne
-    @JoinColumn(name = "transaction")
+    @JoinColumn(name = "transactionId")
     Transaction transaction;
 
 }

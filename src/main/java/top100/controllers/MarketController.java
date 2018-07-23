@@ -3,22 +3,29 @@ package top100.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top100.repository.CompanyRepository;
+import top100.models.Company;
+import top100.models.Trade;
 import top100.repository.UserRepository;
+import top100.service.MarketInterface;
+import top100.service.TradeInterface;
+
+import java.util.List;
 
 @RequestMapping("/api")
 @RestController
 public class MarketController {
 
     private UserRepository userRepository;
-    private CompanyRepository companyRepository;
+    private TradeInterface tradeInterface;
+    private MarketInterface marketInterface;
 
     private String userLoggedIn = "player";
 
     @Autowired
-    public MarketController(UserRepository userRepository, CompanyRepository companyRepository) {
-        this.companyRepository = companyRepository;
+    public MarketController(UserRepository userRepository, TradeInterface tradeInterface, MarketInterface marketInterface) {
         this.userRepository = userRepository;
+        this.tradeInterface = tradeInterface;
+        this.marketInterface = marketInterface;
     }
 
     // Create a market of all the shares
@@ -31,9 +38,28 @@ public class MarketController {
     // The actual worth will be based on the permutations (unless a special even massively changes it).
     // The person who made the most PROFIT, will win the prize.
 
+    @RequestMapping("/market/all")
+    public List<Company> getMarket() {
+        return marketInterface.getMarket();
+    }
+
     @RequestMapping("/market/finalise")
     public void finaliseMarket() {
 
+    }
 
+    @RequestMapping("/market/trades/all")
+    public List<Trade> getMarketOfTrades() {
+        return tradeInterface.getMarketOfTrades();
+    }
+
+    @RequestMapping("/market/trades/purchase/new")
+    public void createPurchaseTrade() {
+        this.tradeInterface.createBuyingTrade();
+    }
+
+    @RequestMapping("/market/trades/sell/new")
+    public void createSellingTrade() {
+        this.tradeInterface.createSellingTrade();
     }
 }

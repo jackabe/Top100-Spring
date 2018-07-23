@@ -1,5 +1,9 @@
 package top100.service;
 
+import top100.models.Trade;
+
+import java.util.List;
+
 /**
  * Created by chohab on 22/07/2018.
  */
@@ -11,13 +15,17 @@ public interface TradeInterface {
     // Completing a trade will change the ownership, change balances etc
 
     // Needs to have buying player ID and transaction ID
-    public void createSellingTrade();
+    void createSellingTrade();
 
-    public void createBuyingTrade();
+    void createBuyingTrade();
 
-    public void completeSellingTrade();
+    void completeSellingTrade();
 
-    public void completeBuyingTrade();
+    void completeBuyingTrade();
+
+    List<Trade> getMarketOfTrades();
+
+    void removeTrade();
 
 
 }
