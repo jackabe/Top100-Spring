@@ -39,6 +39,9 @@ public class Company {
     @Column(name = "shares")
     int sharesAvailable;
 
+    @Column(name = "sharePrice")
+    double sharePrice;
+
     @Column(name = "advantage")
     Boolean competitiveAdvantage;
 

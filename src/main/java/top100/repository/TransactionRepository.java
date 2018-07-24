@@ -24,5 +24,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     void deleteTransactionById(int id);
 
+    Transaction findByUserAndCompany(User user, Company company);
 
 }

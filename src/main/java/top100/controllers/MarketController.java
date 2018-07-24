@@ -3,7 +3,7 @@ package top100.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top100.models.Company;
+import top100.models.MarketRow;
 import top100.models.Trade;
 import top100.service.MarketInterface;
 import top100.service.TradeInterface;
@@ -33,11 +33,11 @@ public class MarketController {
     // When all are sold out, you then need to buy from other players for whatever price you are willing to pay // they are willing to sell
     // When the end of trading window celebration happens, perform caluclations on all stocks, then update the actual worth of stocks
     // The actual worth will be based on the calculation (unless a special event massively changes it).
-    // The person who made the most PROFIT, will win the prize.
+    // The person who made the most PROFIT/HAS THE HIGHEST NET WORTH, will win the prize.
 
     @RequestMapping("/market/all")
-    public List<Company> getMarket() {
-        return marketInterface.getMarket();
+    public List<MarketRow> getMarket() {
+        return marketInterface.getMarket(userLoggedIn);
     }
 
     @RequestMapping("/market/finalise")
@@ -59,4 +59,5 @@ public class MarketController {
     public void createSellingTrade() {
         this.tradeInterface.createSellingTrade(1,1,1);
     }
+
 }

@@ -1,6 +1,6 @@
 package top100.service;
 
-import top100.models.Company;
+import top100.models.MarketRow;
 
 import java.util.List;
 
@@ -9,6 +9,6 @@ import java.util.List;
  */
 public interface MarketInterface {
 
-    List<Company> getMarket();
+    List<MarketRow> getMarket(String username);
 
 }
