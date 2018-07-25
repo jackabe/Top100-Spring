@@ -2,10 +2,7 @@ package top100.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import top100.models.Company;
-import top100.models.MarketRow;
-import top100.models.Transaction;
-import top100.models.User;
+import top100.models.*;
 import top100.repository.CompanyRepository;
 import top100.repository.TransactionRepository;
 import top100.repository.UserRepository;
@@ -31,6 +28,7 @@ public class MarketHandler implements MarketInterface {
 
     }
 
+    @Override
     public List<MarketRow> getMarket(String username) {
         List<Company> marketList = companyRepository.findAll();
         User user = userRepository.findByUsername(username);
@@ -47,6 +45,29 @@ public class MarketHandler implements MarketInterface {
         }
 
         return rows;
+    }
+
+    @Override
+    public void addNewTransaction(TransactionForm transactionForm) {
+        User user = userRepository.findByUsername(transactionForm.getUsername());
+        Company company = companyRepository.findById(transactionForm.getCompanyId());
+        Transaction transaction = new Transaction();
+        transaction.setUser(user);
+        transaction.setCompany(company);
+        transaction.setAmount(transactionForm.getNumberOfSharesToBuy());
+        transaction.setPrice(transactionForm.getPricePerShare());
+
+        if (transactionForm.getNumberOfSharesToBuy() > company.getSharesAvailable()) {
+            String error = "Not enough shares to buy";
+        }
+        else {
+            transactionRepository.saveAndFlush(transaction);
+        }
+    }
+
+    @Override
+    public void deleteTransaction(int transactionId) {
+
     }
 
 }

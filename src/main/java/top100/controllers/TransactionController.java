@@ -4,11 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top100.models.Company;
 import top100.models.Transaction;
+import top100.models.TransactionForm;
 import top100.repository.CompanyRepository;
 import top100.repository.TransactionRepository;
 import top100.repository.UserRepository;
+import top100.service.MarketInterface;
 
 import java.util.List;
 
@@ -19,14 +20,16 @@ public class TransactionController {
     private UserRepository userRepository;
     private CompanyRepository companyRepository;
     private TransactionRepository transactionRepository;
+    private MarketInterface marketInterface;
 
     private String userLoggedIn = "player";
 
     @Autowired
-    public TransactionController(UserRepository userRepository, CompanyRepository companyRepository, TransactionRepository transactionRepository) {
+    public TransactionController(UserRepository userRepository, CompanyRepository companyRepository, TransactionRepository transactionRepository, MarketInterface marketInterface) {
         this.companyRepository = companyRepository;
         this.userRepository = userRepository;
         this.transactionRepository = transactionRepository;
+        this.marketInterface = marketInterface;
     }
 
     @RequestMapping("/transactions/player/{username}")
@@ -35,25 +38,10 @@ public class TransactionController {
     }
 
     @RequestMapping("/transactions/player/new/{username}")
-    public void addNewTransaction(@PathVariable String username) {
+    public void addNewTransaction(@PathVariable String username, TransactionForm transactionForm) {
 
-        // Check company shares number
-        // Temp value of 1
-        Company company = companyRepository.findById(1);
-
-        int numberOfSharesPlayerWants = 500;
-
-        if (company.getSharesAvailable() >= numberOfSharesPlayerWants) {
-            Transaction transaction = new Transaction();
-            transaction.setUser(userRepository.findByUsername(username));
-            transaction.setCompany(companyRepository.findById(1));
-            transaction.setAmount(500);
-            transaction.setPrice(12);
-            transactionRepository.saveAndFlush(transaction);
-        }
-        else {
-//            return "There are not enough shares available to perform this transaction"
-        }
+        // Form will have transaction data, e.g. Company, amountToBuy, Price etc
+        marketInterface.addNewTransaction(transactionForm);
     }
 
     @RequestMapping("/transactions/player/delete/{id}")

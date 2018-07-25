@@ -42,7 +42,6 @@ public class MarketController {
 
     @RequestMapping("/market/finalise")
     public void finaliseMarket() {
-
     }
 
     @RequestMapping("/market/trades/all")
