@@ -3,6 +3,7 @@ package top100.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import top100.models.MarketRow;
 import top100.models.Trade;
 import top100.service.MarketInterface;
@@ -57,6 +58,18 @@ public class MarketController {
     @RequestMapping("/market/trades/sell/new")
     public void createSellingTrade() {
         this.tradeInterface.createSellingTrade(1,1,1);
+    }
+
+    @RequestMapping("/market/test/calucations")
+    public String testCalucationAPI() {
+
+        final String request = "http://127.0.0.1:5000/api/flask/calculations";
+
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject(request, String.class);
+
+        return result;
+
     }
 
 }
