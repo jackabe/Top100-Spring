@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Top100</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="vendor/perfect-scrollbar/perfect-scrollbar.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+
+    <script src="js/main.js"></script>
+
+    <!--===============================================================================================-->
+</head>
+<body>
+
+<input type="checkbox" class="check" id="check"/>
+<main>
+    <header class="item header">
+        <div id="container">
+            <div id="left"><span>Top100</span></div>
+            <div id="center"><span>Money in bank: £500.00</span></div>
+            <div id="right"><span>Window opens in: </span></div>
+        </div>
+
+    </header>
+    <div class="item stats">
+        <div class="news">
+            <h3>News</h3>
+
+            <div class="news-article">
+                <p><b>Apple</b> put another 5000 shares for sale!</p>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="item main">
+        <div class="side-bar">
+            <a href="#">Settings<img src="img/settings.png" alt=""></a>
+            <a href="#">Notes<img src="img/notes.png" alt=""></a>
+            <a href="#">History<img src="img/history.png" alt=""></a>
+            <a href="#">Leaderboard<img class="exit-button" src="img/pound-sterling.png" alt=""></a>
+            <a href="#">Quit<img class="exit-button" src="img/exit.png" alt=""></a>
+        </div>
+        <div class="stocks-window">
+            <div class="table100 ver3 m-b-110">
+                <div class="table100-head">
+                    <table>
+                        <thead>
+                        <tr class="row100 head">
+                            <th class="cell100 column1">Company</th>
+                            <th class="cell100 column2">Market</th>
+                            <th class="cell100 column3">Price (£)</th>
+                            <th class="cell100 column-actions"></th>
+                            <th class="cell100 column4">Quantity</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+
+                <div class="table100-body js-pscroll">
+                    <table id="market-table">
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="player-image">
+            <img src="img/character.png" alt="">
+        </div>
+    </div>
+    <div class="item friends">
+        <h2>Friends</h2>
+        <div class="friends-list">
+            <ul>
+                <li>Jack</li>
+                <li>Ieuan</li>
+                <li>Jack</li>
+                <li>Mert</li>
+                <li>Subash</li>
+                <li>Georgie</li>
+                <li>Jack</li>
+                <li>Ieuan</li>
+            </ul>
+        </div>
+    </div>
+    <label class="btn-open" for="check">STATS</label>
+</main>
+
+</body>
+</html>

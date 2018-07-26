@@ -1,3 +1,6 @@
+var timeLeft = 1800;
+var myVar = setInterval(myTimer, 1000);
+
 $(document).ready(function () {
 
     function getMarket() {
@@ -11,55 +14,100 @@ $(document).ready(function () {
 
                 $.each(data, function (index, data) {
 
-                if (data.hasShares = true) {
-                 $("#market-table")
-                    .append($('<tr>')
-                        .append($('<td>')
-                          .append(data.transaction.company.companyName)
-                        )
-                        .append($('<td>')
-                          .append(data.transaction.company.sharesAvailable)
-                        )
-                        .append($('<td>')
-                          .append(data.transaction.company.sharePrice)
-                        )
-                        .append($('<td>')
-                          .append('<button>Buy</button>')
-                        )
-                        .append($('<td>')
-                          .append('<button>Sell your shares</button>')
-                        )
-                    );
-                  }
+                  if (data.hasShares == true) {
 
-                  else {
-                    $("#market-table")
-                        .append($('<tr>')
-                            .append($('<td>')
+                    var changeClass;
+                    if (data.transaction.company.priceChange.includes('+/')) {
+                        changeClass = 'company-price-change-none';
+                    }
+                    else if (data.transaction.company.priceChange.includes('-')) {
+                        changeClass = 'company-price-change-down';
+                    }
+                    else {
+                        changeClass = 'company-price-change-up';
+                    }
+
+                     $("#market-table > tbody")
+                        .append($('<tr class="row100 body">')
+                            .append($('<td class="cell100 column1">')
                               .append(data.transaction.company.companyName)
+                              .append('<span class='+changeClass+'>'+data.transaction.company.priceChange+'</span>')
                             )
-                            .append($('<td>')
-                              .append(data.transaction.company.sharesAvailable)
+                            .append($('<td class="cell100 column2">')
+                              .append(data.transaction.company.marketType)
                             )
-                            .append($('<td>')
+                            .append($('<td class="cell100 column3">')
                               .append(data.transaction.company.sharePrice)
                             )
-                            .append($('<td>')
-                              .append('<button>Buy</button>')
+                             .append($('<td class="cell100 column-actions">')
+                              .append('<a href="#" class="market-action-button buy">Buy</a>')
+                              .append('<a href="#" class="market-action-button sell">Sell</a>')
+                                .append('<span class="own-span">You own '+data.transaction.amount+'</span>')
+                              )
+                            .append($('<td class="cell100 column4">')
+                              .append(data.transaction.company.sharesAvailable)
                             )
-                        );
-                    }
-            });
+                        )
+                        .find('.market-action-button').data("company-data", data);
+                      }
 
-            }).fail(function (jqXHR, textStatus, errorThrown) { // and what to do if it fails
-                console.log(errorThrown);
-            });
+                      else {
+
+                      var changeClass;
+                      if (data.company.priceChange.includes('+/')) {
+                          changeClass = 'company-price-change-none';
+                      }
+                      else if (data.company.priceChange.includes('-')) {
+                          changeClass = 'company-price-change-down';
+                      }
+                      else {
+                          changeClass = 'company-price-change-up';
+                      }
+                      $("#market-table > tbody")
+                                    .append($('<tr class="row100 body">')
+                                        .append($('<td class="cell100 column1">')
+                                          .append(data.company.companyName)
+                                          .append('<span class='+changeClass+'>'+data.company.priceChange+'</span>')
+                                        )
+                                        .append($('<td class="cell100 column2">')
+                                          .append(data.company.marketType)
+                                        )
+                                        .append($('<td class="cell100 column3">')
+                                          .append(data.company.sharePrice)
+                                        )
+                                        .append($('<td class="cell100 column-actions">')
+                                         .append('<a href="#" class="market-action-button buy">Buy</a>')
+                                         )
+                                        .append($('<td class="cell100 column4">')
+                                          .append(data.company.sharesAvailable)
+                                        )
+                                    )
+                                    .find('.market-action-button').data("company-data", data);
+                     }
+                });
+
+                }).fail(function (jqXHR, textStatus, errorThrown) { // and what to do if it fails
+                    console.log(errorThrown);
+                });
     }
 
-
-
-
     getMarket();
+
+    $(document).on('click','.market-action-button.buy',function() {
+        hello = ($(this).data("company-data"));
+        $.each(hello, function(key, element) {
+            console.log('key: ' + key + '\n' + 'value: ' + element);
+        });
+    });
+
+    $(document).on('click','.market-action-button.sell',function() {
+            hello = ($(this).data("company-data"));
+            $.each(hello, function(key, element) {
+                console.log('key: ' + key + '\n' + 'value: ' + element);
+            });
+        });
+
+
 
      $('.visibility-cart').on('click',function(){
 
@@ -135,3 +183,42 @@ $(document).ready(function () {
  });
 
 
+
+
+function myTimer() {
+	timeLeft --;
+	var minutes = Math.floor(timeLeft / 60);
+	var seconds = timeLeft - minutes * 60;
+
+    document.getElementById("right").innerHTML = "Window opens: " +minutes + ":" + seconds;
+}
+
+// Connect to notification schedular
+var stompClient = null;
+
+function connect() {
+    var socket = new SockJS('/data');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function (frame) {
+        // setConnected(true);
+        console.log('CONNECTED TO FRAME : ' + frame);
+        stompClient.subscribe('/queue/data', function (message) {
+
+            // get activity and set in notification container
+            var activity = (JSON.parse(message.body));
+
+            console.log(activity);
+        });
+    });
+}
+
+function disconnect() {
+    if (stompClient !== null) {
+        stompClient.disconnect();
+    }
+    // setConnected(false);
+    console.log("Disconnected");
+}
+
+
+//connect();

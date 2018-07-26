@@ -7,13 +7,16 @@ public class MarketRow {
 
     private boolean hasShares;
     private Transaction transaction;
+    private Company company;
 
     public MarketRow(boolean hasShares, Transaction transaction) {
         this.hasShares = hasShares;
         this.transaction = transaction;
     }
 
-    public MarketRow() {
+    public MarketRow(boolean hasShares, Company company) {
+        this.hasShares = hasShares;
+        this.company = company;
     }
 
     public boolean isHasShares() {
@@ -30,5 +33,13 @@ public class MarketRow {
 
     public void setTransaction(Transaction transaction) {
         this.transaction = transaction;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 }

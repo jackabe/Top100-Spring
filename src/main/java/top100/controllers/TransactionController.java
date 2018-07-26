@@ -39,7 +39,6 @@ public class TransactionController {
 
     @RequestMapping("/transactions/player/new/{username}")
     public void addNewTransaction(@PathVariable String username, TransactionForm transactionForm) {
-
         // Form will have transaction data, e.g. Company, amountToBuy, Price etc
         marketInterface.addNewTransaction(transactionForm);
     }

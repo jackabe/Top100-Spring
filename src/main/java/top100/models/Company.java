@@ -27,8 +27,14 @@ public class Company {
     @Column(name = "companyName")
     String companyName;
 
+    @Column(name= "marketType")
+    String marketType;
+
     @Column(name = "country")
     String country;
+
+    @Column(name = "priceChange")
+    String priceChange;
 
     @Column(name = "revenue")
     double revenue;

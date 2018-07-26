@@ -36,11 +36,13 @@ public class MarketHandler implements MarketInterface {
 
         for (Company company: marketList) {
             Transaction transaction = transactionRepository.findByUserAndCompany(user, company);
-            boolean hasShares = false;
+            MarketRow row;
             if (transaction != null) {
-                hasShares = true;
+                row = new MarketRow(true, transaction);
             }
-            MarketRow row = new MarketRow(hasShares, transaction);
+            else {
+                row = new MarketRow(false, company);
+            }
             rows.add(row);
         }
 

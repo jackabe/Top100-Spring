@@ -15,6 +15,6 @@ public class RequestRouter extends WebMvcConfigurerAdapter {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("forward:/test.html");
+        registry.addViewController("/").setViewName("forward:/index.html");
     }
 }
