@@ -1,9 +1,10 @@
 package top100.controllers;
 
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import top100.models.Transaction;
 import top100.models.TransactionForm;
 import top100.repository.CompanyRepository;
@@ -37,9 +38,20 @@ public class TransactionController {
         return transactionRepository.findAllByUser(userRepository.findByUsername(userLoggedIn));
     }
 
-    @RequestMapping("/transactions/player/new/{username}")
-    public void addNewTransaction(@PathVariable String username, TransactionForm transactionForm) {
+    @RequestMapping("/transactions/transaction/{id}")
+    public Transaction findTransactionsByUsername(@PathVariable int id) {
+        return marketInterface.findById(id);
+    }
+
+    @RequestMapping(value = "/transactions/player/new", method = RequestMethod.POST)
+    public void addNewTransaction(Authentication auth, TransactionForm transactionForm, BindingResult bindingResult, RedirectAttributes attrs,
+                                  @RequestParam("companyId") int companyId, @RequestParam("sharePrice") double sharePrice,
+                                  @RequestParam("amount") int amount) {
         // Form will have transaction data, e.g. Company, amountToBuy, Price etc
+
+        transactionForm.setCompanyId(companyId);
+        transactionForm.setNumberOfSharesToBuy(amount);
+        transactionForm.setPricePerShare(sharePrice);
         marketInterface.addNewTransaction(transactionForm);
     }
 

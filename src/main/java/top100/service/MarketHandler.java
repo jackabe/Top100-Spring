@@ -51,13 +51,20 @@ public class MarketHandler implements MarketInterface {
 
     @Override
     public void addNewTransaction(TransactionForm transactionForm) {
-        User user = userRepository.findByUsername(transactionForm.getUsername());
+        String username = "player";
+        User user = userRepository.findByUsername(username);
         Company company = companyRepository.findById(transactionForm.getCompanyId());
-        Transaction transaction = new Transaction();
-        transaction.setUser(user);
-        transaction.setCompany(company);
-        transaction.setAmount(transactionForm.getNumberOfSharesToBuy());
-        transaction.setPrice(transactionForm.getPricePerShare());
+        Transaction transaction = transactionRepository.findByUserAndCompany(user, company);
+        if (transaction != null) {
+            transaction.setAmount(transactionForm.getNumberOfSharesToBuy());
+        }
+        else {
+            transaction = new Transaction();
+            transaction.setUser(user);
+            transaction.setCompany(company);
+            transaction.setAmount(transactionForm.getNumberOfSharesToBuy());
+            transaction.setPrice(transactionForm.getPricePerShare());
+        }
 
         if (transactionForm.getNumberOfSharesToBuy() > company.getSharesAvailable()) {
             String error = "Not enough shares to buy";
@@ -70,6 +77,11 @@ public class MarketHandler implements MarketInterface {
     @Override
     public void deleteTransaction(int transactionId) {
 
+    }
+
+    @Override
+    public Transaction findById(int id) {
+        return transactionRepository.findById(id);
     }
 
 }

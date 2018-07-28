@@ -29,7 +29,61 @@
 
     <!--===============================================================================================-->
 </head>
+
 <body>
+
+<div id="market-modal" class="market-modal">
+    <div class="market-modal-content">
+        <span class="market-modal-close">&times;</span>
+        <br>
+                <div class="table">
+                    <div class="layout-inline row th">
+                        <div class="col col-pro">Company</div>
+                        <div class="col col-price align-center ">Price per share</div>
+                        <div class="col col-qty align-center">Quantity</div>
+                        <div class="col">Total</div>
+                    </div>
+
+                    <div class="layout-inline row row-bg2">
+                        <div class="col col-pro layout-inline">
+                            <p class="modal-company-name">Loading...</p>
+                        </div>
+
+                        <div class="col col-price col-numeric align-center">
+                            <p class="modal-price">£0.00</p>
+                        </div>
+
+                        <div class="col col-qty layout-inline">
+                            <a href="#" class="qty qty-minus">-</a>
+                            <input id="market-transaction-qty" type="numeric" value="1" />
+                            <a href="#" class="qty qty-plus">+</a>
+                        </div>
+
+                        <div class="col col-vat col-numeric">
+                            <p class="modal-total">£0.00</p>
+                        </div>
+                    </div>
+
+                    <!--<div class="layout-inline row row-bg2">-->
+        <!--8            </div>-->
+
+                    <div id='market-modal-buttons' style='text-align: center;'>
+                        <div class="market-modal-purchase" style='display: inline-block; vertical-align: middle;'>
+                            Total: £466.00
+                        </div>
+                        <div style='display: inline-block; vertical-align: top;'>
+                            <a href="#" id="market-purchase" class="btn btn-update">Complete</a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 <input type="checkbox" class="check" id="check"/>
 <main>
@@ -103,7 +157,9 @@
         </div>
     </div>
     <label class="btn-open" for="check">STATS</label>
+
 </main>
+
 
 </body>
 </html>

@@ -39,4 +39,9 @@ public class CompanyController {
 
 
     }
+
+    @RequestMapping("/companies/company/{id}")
+    public Company getCompany(@PathVariable int id) {
+        return companyRepository.findById(id);
+    }
 }

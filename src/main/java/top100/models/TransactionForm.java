@@ -8,13 +8,11 @@ public class TransactionForm {
     private int companyId;
     private int numberOfSharesToBuy;
     private double pricePerShare;
-    private String username;
 
-    public TransactionForm(int companyId, int numberOfSharesToBuy, double pricePerShare, String username) {
+    public TransactionForm(int companyId, int numberOfSharesToBuy, double pricePerShare) {
         this.companyId = companyId;
         this.numberOfSharesToBuy = numberOfSharesToBuy;
         this.pricePerShare = pricePerShare;
-        this.username = username;
     }
 
     public TransactionForm() {
@@ -42,13 +40,5 @@ public class TransactionForm {
 
     public void setPricePerShare(double pricePerShare) {
         this.pricePerShare = pricePerShare;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 }

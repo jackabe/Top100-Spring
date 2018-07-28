@@ -1,6 +1,7 @@
 package top100.service;
 
 import top100.models.MarketRow;
+import top100.models.Transaction;
 import top100.models.TransactionForm;
 
 import java.util.List;
@@ -15,5 +16,7 @@ public interface MarketInterface {
     void addNewTransaction(TransactionForm transactionForm);
 
     void deleteTransaction(int transactionId);
+
+    Transaction findById(int id);
 
 }
