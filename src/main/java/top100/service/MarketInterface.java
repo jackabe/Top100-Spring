@@ -15,6 +15,8 @@ public interface MarketInterface {
 
     void addNewTransaction(TransactionForm transactionForm);
 
+    void sellTransaction(TransactionForm transactionForm);
+
     void deleteTransaction(int transactionId);
 
     Transaction findById(int id);

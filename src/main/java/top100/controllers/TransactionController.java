@@ -45,14 +45,26 @@ public class TransactionController {
 
     @RequestMapping(value = "/transactions/player/new", method = RequestMethod.POST)
     public void addNewTransaction(Authentication auth, TransactionForm transactionForm, BindingResult bindingResult, RedirectAttributes attrs,
-                                  @RequestParam("companyId") int companyId, @RequestParam("sharePrice") double sharePrice,
-                                  @RequestParam("amount") int amount) {
+                                  @RequestParam("companyId") int companyId, @RequestParam("transactionId") int transactionId, @RequestParam("sharePrice") double sharePrice,
+                                  @RequestParam("amount") int amount, @RequestParam("type") String type) {
         // Form will have transaction data, e.g. Company, amountToBuy, Price etc
 
         transactionForm.setCompanyId(companyId);
+        transactionForm.setTransactionId(transactionId);
         transactionForm.setNumberOfSharesToBuy(amount);
         transactionForm.setPricePerShare(sharePrice);
-        marketInterface.addNewTransaction(transactionForm);
+        transactionForm.setType(type);
+
+        System.out.println(transactionForm.getCompanyId());
+        System.out.println(transactionForm.getNumberOfSharesToBuy());
+        System.out.println(transactionForm.getPricePerShare());
+
+        if (type.equals("buy")) {
+            marketInterface.addNewTransaction(transactionForm);
+        }
+        else {
+            marketInterface.sellTransaction(transactionForm);
+        }
     }
 
     @RequestMapping("/transactions/player/delete/{id}")

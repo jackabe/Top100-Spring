@@ -3,6 +3,8 @@ var myVar = setInterval(myTimer, 1000);
 
 $(document).ready(function () {
 
+    getBank();
+
     function getMarket() {
 
         $.ajax({//send the AJAX request
@@ -41,6 +43,8 @@ $(document).ready(function () {
             }
 
             if (data.hasShares == true) {
+
+            console.log(data);
 
                  $("#market-table > tbody")
                     .append($('<tr class="row100 body">')
@@ -97,11 +101,14 @@ $(document).ready(function () {
 
     getMarket();
 
+    var companyId = 0;
+    var sharesAvailable = 0;
+
     $(document).on('click','.market-new-action-button.buy',function() {
         var marketRowId = $(this).data("company-data")
 
         $('#market-purchase').data('id-attr', marketRowId);
-        $('#market-modal').fadeIn();
+        $('#market-purchase').data('id-type', 'buy');
 
         $.ajax({//send the AJAX request
                         type: "GET",
@@ -112,6 +119,9 @@ $(document).ready(function () {
                     $('.modal-company-name').html(marketData.companyName);
                     $('.modal-price').html('£'+marketData.sharePrice);
                     $('.modal-total').html(0);
+                    companyId = marketData.id;
+                    sharesAvailable = marketData.sharesAvailable;
+                    $('#market-modal').fadeIn();
                 }).fail(function (jqXHR, textStatus, errorThrown) { // and what to do if it fails
                     console.log(errorThrown);
                 });
@@ -121,7 +131,7 @@ $(document).ready(function () {
     $(document).on('click','.market-action-button.buy',function() {
             var marketRowId = $(this).data("company-data")
             $('#market-purchase').data('id-attr', marketRowId);
-            $('#market-modal').fadeIn();
+            $('#market-purchase').data('id-type', 'buy');
 
             $.ajax({//send the AJAX request
                             type: "GET",
@@ -131,6 +141,9 @@ $(document).ready(function () {
                     }).done(function (marketData) { //what to do if the request is a success.
                         $('.modal-company-name').html(marketData.company.companyName);
                         $('.modal-price').html('£'+marketData.company.sharePrice);
+                        companyId = marketData.company.id;
+                        sharesAvailable = marketData.company.sharesAvailable;
+                        $('#market-modal').fadeIn();
                     }).fail(function (jqXHR, textStatus, errorThrown) { // and what to do if it fails
                         console.log(errorThrown);
                     });
@@ -138,10 +151,27 @@ $(document).ready(function () {
         });
 
     $(document).on('click','.market-action-button.sell',function() {
-        marketData = $(this).data("company-data");
+        var marketRowId = $(this).data("company-data")
+        $('#market-purchase').data('id-type', 'sell');
         $('#market-purchase').data('id-attr', marketRowId);
-        $('#market-modal').fadeIn();
-        console.log(marketData);
+
+        $.ajax({//send the AJAX request
+                        type: "GET",
+                        url: "/api/transactions/transaction/"+marketRowId ,
+                        dataType: "json",
+                        encode: true
+                }).done(function (marketData) { //what to do if the request is a success.
+                console.log(marketData);
+                    $('.modal-company-name').html(marketData.company.companyName);
+                    $('.modal-price').html('£'+marketData.company.sharePrice);
+                    $('#market-transaction-qty').val(marketData.amount);
+                    $('#market-transaction-qty').data('previous-qty', marketData.amount);
+                    companyId = marketData.company.id;
+                    sharesAvailable = marketData.company.sharesAvailable;
+                    $('#market-modal').fadeIn();
+                }).fail(function (jqXHR, textStatus, errorThrown) { // and what to do if it fails
+                    console.log(errorThrown);
+                });
     });
 
     $('.market-modal-close').on('click',function(){
@@ -150,11 +180,35 @@ $(document).ready(function () {
 
     $('#market-purchase').on('click',function(e){
         var purchaseId = $(this).data('id-attr');
+        var type = $(this).data('id-type');
+        var previousAmount = $('#market-transaction-qty').data('previous-qty');
+
+        if (type === 'sell') {
+            var qty = $('#market-transaction-qty').val();
+            if (qty > previousAmount) {
+                alert('You cannot sell more than you have!')
+                $('#market-transaction-qty').val(previousAmount);
+                return '';
+            }
+        }
+
+        if (type === 'buy') {
+            var qty = $('#market-transaction-qty').val();
+            if (qty > sharesAvailable) {
+                alert('Not enough company stock available!')
+                return '';
+            }
+        }
+
         var formData = { //create a JSON object from the form field.
-                        'companyId': purchaseId,
+                        'companyId': companyId,
+                        'transactionId': purchaseId,
                         'sharePrice': parseFloat($('.modal-price').html().slice(1)),
-                        'amount': parseInt($('#market-transaction-qty').val())
+                        'amount': parseInt($('#market-transaction-qty').val()),
+                        'type' : type
                     };
+
+                    console.log(formData);
 
                     $.ajax({//send the AJAX request
                         type: "POST",
@@ -170,6 +224,7 @@ $(document).ready(function () {
                     }).fail(function (jqXHR, textStatus, errorThrown) { //and what to do if it fails
 
                     });
+                    return false;
                     e.preventDefault(); //don't handle the event normally.
     });
 
@@ -204,10 +259,8 @@ $(document).ready(function () {
         var $input = $this.closest('div').find('input');
         var value = parseInt($input.val());
 
-        if (value < 100) {
-        value = value + 1;
-        } else {
-            value =100;
+        if (value < sharesAvailable) {
+            value = value + 1;
         }
 
         $input.val(value);
@@ -225,9 +278,6 @@ $(document).ready(function () {
 
         if (value < 0 || isNaN(value)) {
             input.val(0);
-        } else if
-            (value > 100) {
-            input.val(100);
         }
 
         var price = $('.modal-price').html().slice(1);
@@ -281,3 +331,18 @@ $(document).ready(function () {
 
 
     //connect();
+
+    function getBank() {
+
+            $.ajax({//send the AJAX request
+                    type: "GET",
+                    url: "/api/users/player/bank",
+                    dataType: "json",
+                    encode: true
+            }).done(function (data) { //what to do if the request is a success.
+                $('.player-bank').html('Money in bank: £'+data.toFixed(2))
+
+            }).fail(function (jqXHR, textStatus, errorThrown) { // and what to do if it fails
+                console.log(errorThrown);
+            });
+           }

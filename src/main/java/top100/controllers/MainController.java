@@ -47,6 +47,11 @@ public class MainController {
         return getUser(userLoggedIn);
     }
 
+    @RequestMapping("/users/player/bank")
+    public double getUserBank() {
+        return userRepository.findByUsername(userLoggedIn).getBank();
+    }
+
     public User getUser(String username) {
         User user = userRepository.findByUsername(userLoggedIn);
         return user;

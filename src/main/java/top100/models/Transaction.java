@@ -27,6 +27,9 @@ public class Transaction {
     @Column(name = "amount")
     double amount;
 
+    @Column(name = "initialPrice")
+    double initialPrice;
+
     @Column(name = "price")
     double price;
 
