@@ -9,7 +9,6 @@ import top100.models.User;
 import top100.repository.CompanyRepository;
 import top100.repository.UserRepository;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @RequestMapping("/api")
@@ -64,7 +63,7 @@ public class MainController {
         user.setAddress("Address");
         user.setBank(500);
         user.setEmail("jackallcock@yahoo.co.uk");
-        user.setCreateDate(new Timestamp(System.currentTimeMillis()));
+//        user.setCreateDate(new Timestamp(System.currentTimeMillis()));
 
         userRepository.saveAndFlush(user);
     }

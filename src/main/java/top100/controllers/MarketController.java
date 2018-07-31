@@ -1,9 +1,17 @@
 package top100.controllers;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+import top100.models.Company;
 import top100.models.MarketRow;
 import top100.models.Trade;
 import top100.service.MarketInterface;
@@ -60,15 +68,39 @@ public class MarketController {
         this.tradeInterface.createSellingTrade(1,1,1);
     }
 
-    @RequestMapping("/market/test/calucations")
-    public String testCalucationAPI() {
+    @RequestMapping("/market/calucations/run")
+    public String peformMarketCalculations() {
 
-        final String request = "http://127.0.0.1:5000/api/flask/calculations";
+        List<Company> companies = marketInterface.getMarketForCalculations();
+
+        for (Company company : companies) {
+            company.setTransactions(null);
+        }
+
+        Gson gsonBuilder = new GsonBuilder().create();
+
+        String jsonFromJavaArrayList = gsonBuilder.toJson(companies);
+        System.out.println(jsonFromJavaArrayList);
+
+        final String request = "http://127.0.0.1:5000/api/flask/market/calculate";
 
         RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject(request, String.class);
 
-        return result;
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(request)
+                .queryParam("company-data", jsonFromJavaArrayList);
+
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+
+        HttpEntity<String> response = restTemplate.exchange(
+                builder.toUriString(),
+                HttpMethod.GET,
+                entity,
+                String.class);
+
+        return response.getBody();
 
     }
 

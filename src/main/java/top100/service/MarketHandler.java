@@ -148,4 +148,9 @@ public class MarketHandler implements MarketInterface {
         return transactionRepository.findById(id);
     }
 
+    @Override
+    public List<Company> getMarketForCalculations() {
+        return companyRepository.findAll();
+    }
+
 }

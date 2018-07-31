@@ -1,5 +1,6 @@
 package top100.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,14 +23,17 @@ public class Trade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "buyingPlayer")
     User buyingPlayer;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "sellingPlayer")
     User sellingPlayer;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "transactionId")
     Transaction transaction;

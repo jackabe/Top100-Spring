@@ -33,10 +33,12 @@ public class Transaction {
     @Column(name = "price")
     double price;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "userId")
     User user;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "companyId")
     Company company;
