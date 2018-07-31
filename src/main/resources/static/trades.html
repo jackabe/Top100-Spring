@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Top100</title>
+    <title>Top100 - Trades</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -36,52 +36,52 @@
     <div class="market-modal-content">
         <span class="market-modal-close">&times;</span>
         <br>
-                <div class="table">
-                    <div class="layout-inline row th">
-                        <div class="col col-pro">Company</div>
-                        <div class="col col-price align-center ">Price per share</div>
-                        <div class="col col-qty align-center">Quantity</div>
-                        <div class="col">Total</div>
-                    </div>
+        <div class="table">
+            <div class="layout-inline row th">
+                <div class="col col-pro">Company</div>
+                <div class="col col-price align-center ">Price per share</div>
+                <div class="col col-qty align-center">Quantity</div>
+                <div class="col">Total</div>
+            </div>
 
-                    <div class="layout-inline row row-bg2">
-                        <div class="col col-pro layout-inline">
-                            <p class="modal-company-name">Loading...</p>
-                        </div>
+            <div class="layout-inline row row-bg2">
+                <div class="col col-pro layout-inline">
+                    <p class="modal-company-name">Loading...</p>
+                </div>
 
-                        <div class="col col-price col-numeric align-center">
-                            <p class="modal-price">£0.00</p>
-                        </div>
+                <div class="col col-price col-numeric align-center">
+                    <p class="modal-price">£0.00</p>
+                </div>
 
-                        <div class="col col-qty layout-inline">
-                            <a href="#" class="qty qty-minus">-</a>
-                            <input id="market-transaction-qty" type="numeric" value="1" />
-                            <a href="#" class="qty qty-plus">+</a>
-                        </div>
+                <div class="col col-qty layout-inline">
+                    <a href="#" class="qty qty-minus">-</a>
+                    <input id="market-transaction-qty" type="numeric" value="1" />
+                    <a href="#" class="qty qty-plus">+</a>
+                </div>
 
-                        <div class="col col-vat col-numeric">
-                            <p class="modal-total">£0.00</p>
-                        </div>
-                    </div>
-
-                    <!--<div class="layout-inline row row-bg2">-->
-        <!--8            </div>-->
-
-                    <div id='market-modal-buttons' style='text-align: center;'>
-                        <div class="market-modal-purchase" style='display: inline-block; vertical-align: middle;'>
-                            Total: £466.00
-                        </div>
-                        <div style='display: inline-block; vertical-align: top;'>
-                            <a href="#" id="market-purchase" class="btn btn-update">Complete</a>
-                        </div>
-                    </div>
-
-
+                <div class="col col-vat col-numeric">
+                    <p class="modal-total">£0.00</p>
                 </div>
             </div>
+
+            <!--<div class="layout-inline row row-bg2">-->
+            <!--8            </div>-->
+
+            <div id='market-modal-buttons' style='text-align: center;'>
+                <div class="market-modal-purchase" style='display: inline-block; vertical-align: middle;'>
+                    Total: £466.00
+                </div>
+                <div style='display: inline-block; vertical-align: top;'>
+                    <a href="#" id="market-purchase" class="btn btn-update">Complete</a>
+                </div>
             </div>
+
+
         </div>
     </div>
+</div>
+</div>
+</div>
 
 </div>
 
@@ -109,7 +109,7 @@
         <div class="side-bar">
             <a href="#">Settings<img src="img/settings.png" alt=""></a>
             <a href="#">Notes<img src="img/notes.png" alt=""></a>
-            <a href="/trades">Trades<img src="img/history.png" alt=""></a>
+            <a href="/">Market<img src="img/history.png" alt=""></a>
             <a href="#">Leaderboard<img class="exit-button" src="img/pound-sterling.png" alt=""></a>
             <a href="#">Quit<img class="exit-button" src="img/exit.png" alt=""></a>
         </div>
@@ -120,7 +120,7 @@
                         <thead>
                         <tr class="row100 head">
                             <th class="cell100 column1">Company</th>
-                            <th class="cell100 column2">Market</th>
+                            <th class="cell100 column2">Type</th>
                             <th class="cell100 column3">Price (£)</th>
                             <th class="cell100 column-actions"></th>
                             <th class="cell100 column4">Quantity</th>

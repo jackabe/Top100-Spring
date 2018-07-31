@@ -18,7 +18,11 @@ $(document).ready(function () {
 
         $.each(data, function (index, data) {
 
+            var text = '';
+            var companySharesAvailable = 0;
+
             if (data.hasShares == true) {
+                companySharesAvailable = data.transaction.company.sharesAvailable;
                 if (data.transaction.company.priceChange.includes('+/')) {
                     changeClass = 'company-price-change-none';
                 }
@@ -30,16 +34,24 @@ $(document).ready(function () {
                 }
             }
             else {
+                companySharesAvailable = data.company.sharesAvailable;
                 if (data.company.priceChange.includes('+/')) {
                     changeClass = 'company-price-change-none';
-            }
-            else if (data.company.priceChange.includes('-')) {
-                    changeClass = 'company-price-change-down';
-            }
-            else {
-                    changeClass = 'company-price-change-up';
+                }
+                else if (data.company.priceChange.includes('-')) {
+                        changeClass = 'company-price-change-down';
+                }
+                else {
+                        changeClass = 'company-price-change-up';
+                }
             }
 
+
+            if (companySharesAvailable == 0) {
+                text = '<span>Sold out</span>';
+            }
+            else {
+                text = companySharesAvailable;
             }
 
             if (data.hasShares == true) {
@@ -64,7 +76,7 @@ $(document).ready(function () {
                             .append('<span class="own-span">You own '+data.transaction.amount+'</span>')
                         )
                         .append($('<td class="cell100 column4">')
-                            .append(data.transaction.company.sharesAvailable)
+                            .append(text)
                         )
                     )
             }
@@ -87,7 +99,7 @@ $(document).ready(function () {
                             .append('<a href="#" class="market-new-action-button buy" data-company-data="'+data.company.id+'">Buy</a>')
                         )
                         .append($('<td class="cell100 column4">')
-                            .append(data.company.sharesAvailable)
+                            .append(text)
                         )
                     )
             }
