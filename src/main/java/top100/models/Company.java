@@ -55,7 +55,7 @@ public class Company {
     Boolean competitiveAdvantage;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY)
     List<Transaction> transactions;
 
 }

@@ -38,13 +38,12 @@ public class Transaction {
     @JoinColumn(name = "userId")
     User user;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "companyId")
     Company company;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "transaction")
+    @OneToMany(mappedBy = "transaction", fetch = FetchType.LAZY)
     List<Trade> trades;
 
 }

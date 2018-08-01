@@ -21,6 +21,8 @@ $(document).ready(function () {
             var text = '';
             var companySharesAvailable = 0;
 
+            console.log(data);
+
             if (data.hasShares == true) {
                 companySharesAvailable = data.transaction.company.sharesAvailable;
                 if (data.transaction.company.priceChange.includes('+/')) {
