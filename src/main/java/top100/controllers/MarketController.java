@@ -2,6 +2,7 @@ package top100.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,9 +15,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 import top100.models.Company;
 import top100.models.MarketRow;
 import top100.models.Trade;
+import top100.repository.CompanyRepository;
 import top100.service.MarketInterface;
 import top100.service.TradeInterface;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RequestMapping("/api")
@@ -25,13 +28,15 @@ public class MarketController {
 
     private TradeInterface tradeInterface;
     private MarketInterface marketInterface;
+    private CompanyRepository companyRepository;
 
     private String userLoggedIn = "player";
 
     @Autowired
-    public MarketController(TradeInterface tradeInterface, MarketInterface marketInterface) {
+    public MarketController(TradeInterface tradeInterface, MarketInterface marketInterface, CompanyRepository companyRepository) {
         this.tradeInterface = tradeInterface;
         this.marketInterface = marketInterface;
+        this.companyRepository = companyRepository;
     }
 
     // Create a market of all the shares
@@ -69,7 +74,7 @@ public class MarketController {
     }
 
     @RequestMapping("/market/calucations/run")
-    public String peformMarketCalculations() {
+    public void performMarketCalculations() {
 
         List<Company> companies = marketInterface.getMarketForCalculations();
 
@@ -80,7 +85,6 @@ public class MarketController {
         Gson gsonBuilder = new GsonBuilder().create();
 
         String jsonFromJavaArrayList = gsonBuilder.toJson(companies);
-        System.out.println(jsonFromJavaArrayList);
 
         final String request = "http://127.0.0.1:5000/api/flask/market/calculate";
 
@@ -100,8 +104,23 @@ public class MarketController {
                 entity,
                 String.class);
 
-        return response.getBody();
+        String data = response.getBody();
+        String trimmedData = data.substring(1, data.length()-2).replaceAll("\\\\","");
+        List<String> companyData = Arrays.asList(trimmedData.split("\\s*,\\s*"));
 
+        System.out.println(companyData);
+
+        for (String item : companyData) {
+            JSONObject jsonObject = new JSONObject(item);
+            for(int i = 0; i<jsonObject.names().length(); i++){
+                int companyId = Integer.parseInt(jsonObject.names().getString(i));
+                double companyRevenue = Double.parseDouble(jsonObject.get(jsonObject.names().getString(i)).toString());
+                Company company = companyRepository.findById(companyId);
+                company.setRevenue(companyRevenue);
+                company.setSharePrice(companyRevenue / company.getSharesAvailable());
+                companyRepository.saveAndFlush(company);
+            }
+        }
     }
 
 }

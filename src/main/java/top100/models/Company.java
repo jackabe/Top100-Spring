@@ -42,6 +42,9 @@ public class Company {
     @Column(name = "employees")
     int employees;
 
+    @Column(name = "age")
+    int age;
+
     @Column(name = "shares")
     int sharesAvailable;
 

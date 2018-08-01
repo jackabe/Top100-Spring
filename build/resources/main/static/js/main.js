@@ -68,7 +68,7 @@ $(document).ready(function () {
                             .append(data.transaction.company.marketType)
                         )
                         .append($('<td class="cell100 column3">')
-                            .append('£'+data.transaction.company.sharePrice)
+                            .append('£'+data.transaction.company.sharePrice.toFixed(2))
                         )
                         .append($('<td class="cell100 column-actions">')
                             .append('<a href="#" class="market-action-button buy" data-company-data="'+data.transaction.id+'">Buy</a>')
@@ -93,7 +93,7 @@ $(document).ready(function () {
                             .append(data.company.marketType)
                         )
                         .append($('<td class="cell100 column3">')
-                            .append('£'+data.company.sharePrice)
+                            .append('£'+data.company.sharePrice.toFixed(2))
                         )
                         .append($('<td class="cell100 column-actions">')
                             .append('<a href="#" class="market-new-action-button buy" data-company-data="'+data.company.id+'">Buy</a>')
@@ -129,7 +129,7 @@ $(document).ready(function () {
                         encode: true
                 }).done(function (marketData) { //what to do if the request is a success.
                     $('.modal-company-name').html(marketData.companyName);
-                    $('.modal-price').html('£'+marketData.sharePrice);
+                    $('.modal-price').html('£'+marketData.sharePrice.toFixed(2));
                     $('.modal-total').html(0);
                     companyId = marketData.id;
                     sharesAvailable = marketData.sharesAvailable;
@@ -152,7 +152,7 @@ $(document).ready(function () {
                             encode: true
                     }).done(function (marketData) { //what to do if the request is a success.
                         $('.modal-company-name').html(marketData.company.companyName);
-                        $('.modal-price').html('£'+marketData.company.sharePrice);
+                        $('.modal-price').html('£'+marketData.company.sharePrice.toFixed(2));
                         companyId = marketData.company.id;
                         sharesAvailable = marketData.company.sharesAvailable;
                         $('#market-modal').fadeIn();
@@ -175,7 +175,7 @@ $(document).ready(function () {
                 }).done(function (marketData) { //what to do if the request is a success.
                 console.log(marketData);
                     $('.modal-company-name').html(marketData.company.companyName);
-                    $('.modal-price').html('£'+marketData.company.sharePrice);
+                    $('.modal-price').html('£'+marketData.company.sharePrice.toFixed(2));
                     $('#market-transaction-qty').val(marketData.amount);
                     $('#market-transaction-qty').data('previous-qty', marketData.amount);
                     companyId = marketData.company.id;
