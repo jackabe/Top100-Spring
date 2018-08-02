@@ -19,10 +19,13 @@ USE `top100` ;
 CREATE TABLE IF NOT EXISTS `top100`.`company` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `companyName` VARCHAR(45) NOT NULL,
+  `marketType` VARCHAR(45) NOT NULL,
+  `priceChange` VARCHAR(45) NOT NULL,
   `country` VARCHAR(45) NOT NULL,
-  `revenue` DECIMAL(10,2) NOT NULL,
+  `revenue` BIGINT NOT NULL,
   `sharePrice` DECIMAL(10,2) NOT NULL,
-  `employees` VARCHAR(45) NOT NULL,
+  `employees` INT NOT NULL,
+  `age` INT NOT NULL,
   `advantage` TINYINT(4) NOT NULL,
   `shares` INT NOT NULL,
   PRIMARY KEY (`id`))
@@ -53,6 +56,7 @@ CREATE TABLE IF NOT EXISTS `top100`.`transaction` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `companyId` INT NOT NULL,
   `amount` INT NOT NULL,
+  `initialPrice` VARCHAR(45) NOT NULL,
   `price` VARCHAR(45) NOT NULL,
   `userId` INT NOT NULL,
   PRIMARY KEY (`id`),
@@ -111,9 +115,23 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 
-INSERT INTO `top100`.`user` (`id`, `username`, `password`, `email`, `address`, `createDate`, `bank`) VALUES ('1', 'player', 'password', 'jackallcock@yahoo.co.uk', 'Address', '2018-07-20 14:15:48.586', '500.0');
+INSERT INTO `top100`.`user` (`id`, `username`, `password`, `email`, `address`, `createDate`, `bank`) VALUES ('1', 'player', 'password', 'jackallcock@yahoo.co.uk', 'Address', '2018-07-20 14:15:48.586', '1000.0');
+INSERT INTO `top100`.`user` (`id`, `username`, `password`, `email`, `address`, `createDate`, `bank`) VALUES ('2', 'buyer', 'password', 'buyer@yahoo.co.uk', 'Address', '2018-07-20 14:15:48.586', '1000.0');
 
-INSERT INTO `top100`.`company` (`id`, `companyName`, `country`, `revenue`, `sharePrice`, `employees`, `advantage`, `shares`) VALUES ('1', 'Apple', 'USA', '4542245', '2.35', '4221', '1', 10000);
+INSERT INTO `top100`.`company` (`id`, `companyName`, `marketType`, `priceChange`, `country`, `revenue`, `sharePrice`, `employees`, `age`, `advantage`, `shares`) VALUES ('1', 'Apple', 'Technology', '+/-0.0%', 'USA', '23500', '20.24', '123000', 42,  '1', '300');
+INSERT INTO `top100`.`company` (`id`, `companyName`, `marketType`, `priceChange`, `country`, `revenue`, `sharePrice`, `employees`, `age`, `advantage`, `shares`) VALUES ('2', 'BP', 'Oil', '+/-0.0%', 'USA', '13500', '10.35', '12000', 109, '1', '100');
+INSERT INTO `top100`.`company` (`id`, `companyName`, `marketType`, `priceChange`, `country`, `revenue`, `sharePrice`, `employees`, `age`, `advantage`, `shares`) VALUES ('3', 'Admiral', 'Insurance', '+/-0.0%', 'UK', '2000', '15.35', '1200', 25, '1', '100');
+INSERT INTO `top100`.`company` (`id`, `companyName`, `marketType`, `priceChange`, `country`, `revenue`, `sharePrice`, `employees`, `age`, `advantage`, `shares`) VALUES ('4', 'BAE', 'Industry', '+/-0.0%', 'UK', '9000', '6.35', '2350', 18, '1', '100');
+INSERT INTO `top100`.`company` (`id`, `companyName`, `marketType`, `priceChange`, `country`, `revenue`, `sharePrice`, `employees`, `age`, `advantage`, `shares`) VALUES ('5', 'Barclays', 'Finance', '+/-0.0%', 'UK', '7000', '34.35', '2139', 122, '0', '150');
+INSERT INTO `top100`.`company` (`id`, `companyName`, `marketType`, `priceChange`, `country`, `revenue`, `sharePrice`, `employees`, `age`, `advantage`, `shares`) VALUES ('6', 'Honda', 'Automobiles', '+/-0.0%', 'JAPAN', '15000', '3.45', '5643', 69, '0', '100');
+INSERT INTO `top100`.`company` (`id`, `companyName`, `marketType`, `priceChange`, `country`, `revenue`, `sharePrice`, `employees`, `age`, `advantage`, `shares`) VALUES ('7', 'GoldIsUs', 'Mining', '+/-0.0%', 'DUB', '124', '0.45', '120', 3, '0', '100');
+INSERT INTO `top100`.`company` (`id`, `companyName`, `marketType`, `priceChange`, `country`, `revenue`, `sharePrice`, `employees`, `age`, `advantage`, `shares`) VALUES ('8', 'Pixel', 'Technology', '+/-0.0%', 'SPAIN', '234', '0.50', '55', 1, '0', '100');
+INSERT INTO `top100`.`company` (`id`, `companyName`, `marketType`, `priceChange`, `country`, `revenue`, `sharePrice`, `employees`, `age`, `advantage`, `shares`) VALUES ('9', 'Samsung', 'Technology', '+/-0.0%', 'JAPAN', '19500', '40.35', '9493', 80, '1', '100');
+INSERT INTO `top100`.`company` (`id`, `companyName`, `marketType`, `priceChange`, `country`, `revenue`, `sharePrice`, `employees`, `age`, `advantage`, `shares`) VALUES ('10', 'Next', 'Retail', '+/-0.0%', 'UK', '23500', '5.65', '1230', 154, '0', '100');
+INSERT INTO `top100`.`company` (`id`, `companyName`, `marketType`, `priceChange`, `country`, `revenue`, `sharePrice`, `employees`, `age`, `advantage`, `shares`) VALUES ('11', 'Zara', 'Retail', '+/-0.0%', 'SPAIN', '12000', '24.78', '2356', 44, '0', '100');
+INSERT INTO `top100`.`company` (`id`, `companyName`, `marketType`, `priceChange`, `country`, `revenue`, `sharePrice`, `employees`, `age`, `advantage`, `shares`) VALUES ('12', 'OilCo', 'Oil', '+/-0.0%', 'INDIA', '670', '0.10', '5', 10,  '0', '100');
 
-INSERT INTO `top100`.`transaction` (`id`, `companyId`, `amount`, `price`) VALUES ('1', '1', '100', '1.24');
+
+
+
 
