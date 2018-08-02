@@ -16,5 +16,6 @@ public class CompanyPrice {
 
     private int companyId;
     private List<TransactionDTO> transactions;
+    private double sharePrice;
 
 }

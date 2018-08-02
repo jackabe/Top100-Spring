@@ -2,6 +2,7 @@ package top100.scheduler;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +21,7 @@ import top100.repository.CompanyRepository;
 import top100.service.MarketInterface;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Transactional
@@ -30,8 +32,9 @@ public class MainSchedular {
     private CompanyRepository companyRepository;
 
     @Autowired
-    public MainSchedular(MarketInterface marketInterface) {
+    public MainSchedular(MarketInterface marketInterface, CompanyRepository companyRepository) {
         this.marketInterface = marketInterface;
+        this.companyRepository = companyRepository;
     }
 
     @Scheduled(fixedRate = 50000)
@@ -47,7 +50,7 @@ public class MainSchedular {
                 TransactionDTO transactionDTO = new TransactionDTO(transaction.getInitialPrice(), transaction.getPrice());
                 transactionDTOs.add(transactionDTO);
             }
-            CompanyPrice companyPrice = new CompanyPrice(company.getId(), transactionDTOs);
+            CompanyPrice companyPrice = new CompanyPrice(company.getId(), transactionDTOs, company.getSharePrice());
             companyDataToSend.add(companyPrice);
         }
 
@@ -74,23 +77,19 @@ public class MainSchedular {
                 String.class);
 
         String data = response.getBody();
-        System.out.println(data);
-//        String trimmedData = data.substring(1, data.length()-2).replaceAll("\\\\","");
-//        List<String> companyData = Arrays.asList(trimmedData.split("\\s*,\\s*"));
-//
-//        for (String item : companyData) {
-//            JSONObject jsonObject = new JSONObject(item);
-//            for(int i = 0; i<jsonObject.names().length(); i++){
-//                int companyId = Integer.parseInt(jsonObject.names().getString(i));
-//                double companyRevenue = Double.parseDouble(jsonObject.get(jsonObject.names().getString(i)).toString());
-//                Company company = companyRepository.findById(companyId);
-//                company.setRevenue(companyRevenue);
-//                company.setSharePrice(companyRevenue / company.getSharesAvailable());
-//                companyRepository.saveAndFlush(company);
-//            }
-//        }
-//    }
+        String trimmedData = data.substring(1, data.length()-2).replaceAll("\\\\","");
+        List<String> companyData = Arrays.asList(trimmedData.split("\\s*,\\s*"));
 
+        for (String item : companyData) {
+            JSONObject jsonObject = new JSONObject(item);
+            for(int i = 0; i<jsonObject.names().length(); i++){
+                int companyId = Integer.parseInt(jsonObject.names().getString(i));
+                String priceChange = jsonObject.get(jsonObject.names().getString(i)).toString();
+                Company company = companyRepository.findById(companyId);
+                company.setPriceChange(priceChange);
+                companyRepository.saveAndFlush(company);
+            }
+        }
     }
 }
 
